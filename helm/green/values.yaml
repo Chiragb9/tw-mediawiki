@@ -1,0 +1,6 @@
+
+image:
+  tag: v1
+
+deployment:
+  replicas: 3

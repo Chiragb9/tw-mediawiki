@@ -1,0 +1,63 @@
+name: Manual Code Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+        environment:
+            default: blue
+            required: true
+            type: choice
+            options:
+            - blue
+            - green
+        imageTag:
+            default: v1
+            required: true
+        branch:
+            default: main
+            required: false
+        updateImage:
+            default: 'false'
+            required: true
+            type: choice
+            options:
+            - 'true'
+            - 'false'
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        issues: write
+        id-token: write
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.branch }}
+
+    - name: Build and Push New Docker Image
+      if: ${{ inputs.updateImage }} == 'true'
+      run: |
+        cd ./src/
+        docker build -t chiragb9/tw-mediawiki:${{ inputs.imageTag }} .
+        docker login --username chiragb9 --password ${{ secrets.DOCKER_PASS }}
+        docker push chiragb9/tw-mediawiki:${{ inputs.imageTag }}
+
+    - name: 'Az CLI login'
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: Set AKS Context
+      run: |
+        az aks get-credentials --resource-group 'tw-mw-rg' --name 'tw-mw-cluster'
+
+    - name: Update Deployment
+      run: |
+        cd ./helm/
+        helm upgrade --set image.tag=${{ inputs.imageTag }}  ${{ inputs.environment }}-deployment ./${{ inputs.environment }}/ 

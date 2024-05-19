@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediawiki
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      app: mediawiki
+      env: blue
+  template:
+    metadata:
+      labels:
+        app: mediawiki
+        env: blue
+    spec:
+      containers:
+      - name: mediawiki
+        image: chiragb9/tw-mediawiki:{{ .Values.image.tag }}
+        ports:
+        - containerPort: 80
