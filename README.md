@@ -1,6 +1,11 @@
 This repo contains the code for running the mediawiki application on Linux (Ubuntu) based Docker Image on Azure Kubernetes Service.
 ===================================================================================================================================
 
+1) Setup Azure Infra (AKS) with code in infra folder by running terraform command or by running terraform deploy github action worflow
+2) After a Kubernetes Cluster is setup (AKS or local), run the "helm/setup.sh" to setup the kubernetes components
+3) To change environment from blue to green or vice versa, use the "change prod environment" github action workflow.
+4) To deploy new docker image use "manual deploy code" github action workflow.
+
 GitHub Actions Secrets
 ======================
 
