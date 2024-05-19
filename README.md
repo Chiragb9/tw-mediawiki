@@ -6,31 +6,30 @@ GitHub Actions Secrets
 
 ADD AZURE CREDENTIALS IN GITHUB SECRETS
 
-AZURE_CLIENT_ID	-> Application (client) ID
-AZURE_TENANT_ID	-> Directory (tenant) ID
-AZURE_SUBSCRIPTION_ID	-> Subscription ID
+1) AZURE_CLIENT_ID	-> Application (client) ID
+2) AZURE_TENANT_ID	-> Directory (tenant) ID
+3) AZURE_SUBSCRIPTION_ID	-> Subscription ID
 
 
 To push new Image to Docker Hub
 
-DOCKER_PASS  -> Docker Hub Password 
+4) DOCKER_PASS  -> Docker Hub Password 
 
 Also accordingly change docker push command in ".github/workflows/change-prod-env.yaml"
 
-====================================================================================================================================
 
 Files 
 ======
 
-/infra -> contains terraform files for Azure Cloud Infrastructure
+1) /infra -> contains terraform files for Azure Cloud Infrastructure
 
-/helm  -> contains Helm charts for kubernetes object
+2) /helm  -> contains Helm charts for kubernetes object
 
-  /blue  -> contains the deployment file(s) for Blue environment.
-  /green -> contains the deployment file(s) for Green environment.
-  setup.sh files contains initial commands to setup the kubernetes objects on the kubernetes cluster.
+  1) /blue  -> contains the deployment file(s) for Blue environment.
+  2) /green -> contains the deployment file(s) for Green environment.
+  3) setup.sh files contains initial commands to setup the kubernetes objects on the kubernetes cluster.
 
-/src -> contains Dockerfile and required shell script for fetching source and installing dependencies
+3) /src -> contains Dockerfile and required shell script for fetching source and installing dependencies
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
