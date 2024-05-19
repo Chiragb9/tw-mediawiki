@@ -43,12 +43,20 @@ spec:
       containers:
       - name: mysql
         image: mysql:5.7
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", /opt/poststart.sh ]
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom: 
             secretKeyRef: 
               key: ROOT_PASSWORD
               name: mysqlrootpassword
+        - name: USER
+          value: test
+        - name: PASSWORD
+          value: test
         ports:
         - name: mysql
           containerPort: 3306
@@ -58,6 +66,9 @@ spec:
           subPath: mysql
         - name: conf
           mountPath: /etc/mysql/conf.d
+        - mountPath: /opt/poststart.sh
+          subPath: poststart.sh
+          name: hookvolume
         resources:
           requests:
             cpu: 500m
@@ -68,6 +79,10 @@ spec:
       - name: config-map
         configMap:
           name: mysql
+      - name: hookvolume
+        configMap:
+          name: poststarthook
+          defaultMode: 0755
   volumeClaimTemplates:
   - metadata:
       name: data

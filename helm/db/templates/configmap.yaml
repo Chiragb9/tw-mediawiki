@@ -13,4 +13,7 @@ data:
   replica.cnf: |
     # Apply this config only on replicas.
     [mysqld]
-    super-read-only 
+    super-read-only
+  poststart.sh: |
+    #!/bin/bash
+    mysql -u root -p$MYSQL_ROOT_PASSWORD -h localhost -e "CREATE USER $USER'@'localhost' IDENTIFIED BY '$PASSWORD';CREATE DATABASE my_wiki; USE my_wiki; GRANT ALL ON my_wiki.* TO '$USER'@'localhost';COMMIT;"
