@@ -45,5 +45,3 @@ deploy the same to the Kubernetes deployment (blue or green) of choosing
 3) The "Run Helm Setup" GitHub Actions Workflow can be used to install helm chart on AKS.
 
 4) The "Terraform" Workflow can be used to deploy terraform code to AKS
-
-GitHub Actions uses a federated service prinicipal to interact with Azure Cloud.
